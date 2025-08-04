@@ -6,12 +6,13 @@ import jakarta.persistence.Id;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.springframework.security.core.userdetails.UserDetails;
 
 @Entity
-@Data
+
 @NoArgsConstructor
 @AllArgsConstructor
-public class User {
+public class User{
 
     @Id
     private Integer id;

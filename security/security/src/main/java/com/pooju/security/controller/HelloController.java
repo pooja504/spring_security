@@ -24,7 +24,7 @@ public class HelloController {
         return "Hi goois";
     }
 
-    @GetMapping("products")
+    @GetMapping("/products")
     public Products getProducts(){
         return new Products("jetti", 6,100.0);
     }
