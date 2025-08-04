@@ -9,7 +9,7 @@ import lombok.NoArgsConstructor;
 import org.springframework.security.core.userdetails.UserDetails;
 
 @Entity
-
+@Data
 @NoArgsConstructor
 @AllArgsConstructor
 public class User{
