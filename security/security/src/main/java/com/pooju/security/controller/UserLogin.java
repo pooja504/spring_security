@@ -3,6 +3,7 @@ package com.pooju.security.controller;
 
 import com.pooju.security.model.User;
 import com.pooju.security.repository.UserRepo;
+import com.pooju.security.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -16,6 +17,8 @@ public class UserLogin {
     private UserRepo userRepo;
     @Autowired
     private BCryptPasswordEncoder bCryptPasswordEncoder;
+    @Autowired
+    private UserService userService;
 
 
     @PostMapping("/register")
@@ -25,11 +28,6 @@ public class UserLogin {
     }
     @PostMapping("/login")
     public String userlogin(@RequestBody User userl){
-        User byUsername = userRepo.findByUsername(userl.getUsername());
-        if (byUsername==null){
-            return "no user";
-        }else {
-            return "susess";
-        }
+        return userService.verify(userl);
     }
 }
