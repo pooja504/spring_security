@@ -13,12 +13,12 @@ public class UserService {
 
     private final UserRepo userRepo;
     private final AuthenticationManager authenticationManager;
-    private final JasonToken jasonToken;
+    private final JwtService jwtService;
 
-    public UserService(UserRepo userRepo, AuthenticationManager authenticationManager, JasonToken jasonToken) {
+    public UserService(UserRepo userRepo, AuthenticationManager authenticationManager, JwtService jwtService) {
         this.userRepo = userRepo;
         this.authenticationManager = authenticationManager;
-        this.jasonToken = jasonToken;
+        this.jwtService = jwtService;
     }
 
     public String verify(User userl) {
@@ -31,7 +31,7 @@ public class UserService {
 
         //User byUsername =userRepo.findByUsername(userl.getUsername());
         if (authenticate.isAuthenticated()){
-            return jasonToken.CreateJasonToken(userl);
+            return jwtService.CreateJasonToken(userl);
         }else {
             return "fail";
         }

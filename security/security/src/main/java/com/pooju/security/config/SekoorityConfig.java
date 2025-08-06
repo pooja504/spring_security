@@ -39,7 +39,7 @@ public class SekoorityConfig {
         httpSecurity
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(request -> request
-                        .requestMatchers("register","login").permitAll()
+                        .requestMatchers("register","login","/actuator/**").permitAll()
                         .anyRequest().authenticated())
                 //.formLogin(Customizer.withDefaults())
                 .httpBasic(Customizer.withDefaults())

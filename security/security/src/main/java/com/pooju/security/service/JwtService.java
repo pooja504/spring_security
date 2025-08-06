@@ -2,18 +2,18 @@ package com.pooju.security.service;
 
 import com.pooju.security.UserDetails;
 import com.pooju.security.model.User;
+import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.io.Decoder;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
 import org.springframework.stereotype.Service;
 
 import javax.crypto.SecretKey;
-import java.security.Key;
 import java.util.*;
+import java.util.function.Function;
 
 @Service
-public class JasonToken {
+public class JwtService {
 
 
     private String secretKey=null;
@@ -44,12 +44,37 @@ public class JasonToken {
 
     }
 
-    public String extractUserName() {
-        return "";
+    public String extractUserName(String jwtToken) {
+
+        return extractClaims(jwtToken, Claims::getSubject);
+    }
+
+    private <T> T extractClaims(String jwtToken, Function<Claims,T> claimResolver) {
+        Claims claims= extractClaims(jwtToken);
+        return claimResolver.apply(claims);
+    }
+
+    private Claims extractClaims(String jwtToken) {
+        return
+                Jwts
+                        .parser()
+                        .verifyWith(getKey())
+                        .build()
+                        .parseSignedClaims(jwtToken)
+                        .getPayload();
     }
 
     public boolean isTokenValid(String jwt, UserDetails userDetails) {
-        return true;
+        String username=extractUserName(jwt);
+        return (username.equals(userDetails.getUsername()) && !isTokenExpired(jwt));
+    }
+
+    private boolean isTokenExpired(String jwt) {
+        return extractExpiration(jwt).before(new Date());
+    }
+
+    private Date extractExpiration(String jwt) {
+        return extractClaims(jwt,Claims::getExpiration);
     }
 }
 //2"43
